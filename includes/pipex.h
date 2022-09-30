@@ -10,4 +10,6 @@ typedef struct s_execinfo
 	char	**bins;
 	char	**envp;
 }	t_execinfo;
+
+t_execinfo	*construct_execinfo(int argc, char **argv, char **envp);
 #endif

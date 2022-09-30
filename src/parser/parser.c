@@ -1,6 +1,5 @@
 #include "libft.h"
 #include "utils.h"
-#include "pipex.h"
 #include <unistd.h>
 
 char	**parse_paths(char **envp)
@@ -84,36 +83,4 @@ char	**make_full_bin_paths(int argc, char **argv, char **paths)
 	}
 	bins[i_bin] = NULL;
 	return (bins);
-}
-
-t_execinfo	*execinfo_init(void)
-{
-	t_execinfo	*init;
-
-	init = (t_execinfo *)malloc(sizeof(t_execinfo));
-	if (!init)
-		return (NULL);
-	ft_memset(init, 0, sizeof(t_execinfo));
-	return (init);
-}
-
-t_execinfo	*construct_execinfo(int argc, char **argv, char **envp)
-{
-	t_execinfo	*execinfo;
-	char	**paths;
-
-	execinfo = execinfo_init();
-	if (!execinfo)
-		return (NULL);
-	if (argc - 3 < 2 || is_access_denied(argv[1], argv[argc - 1]))
-		return (NULL);
-	paths = parse_paths(envp);
-	if (!paths)
-		return (NULL);
-	execinfo->bins = make_full_bin_paths(argc, argv, paths);
-	if (!execinfo->bins)
-	{
-		free_strs(paths);
-		return (NULL);
-	}
 }

@@ -12,7 +12,8 @@ SRCDIR			= ./src
 SRCNAME			= \
 				$(SRCDIR)/pipex \
 				$(SRCDIR)/utils/str_utils \
-				$(SRCDIR)/parser/parser
+				$(SRCDIR)/parser/parser \
+				$(SRCDIR)/parser/t_execinfo
 
 SRCNAME_BONUS	= \
 
