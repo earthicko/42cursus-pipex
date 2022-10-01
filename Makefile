@@ -1,5 +1,4 @@
 NAME			= pipex
-BONUS			= 
 
 LIBFT_DIR		= libft
 LIBFT			= libft.a
@@ -11,16 +10,16 @@ INC_DIR			= -I . $(INC_DIR_LIBFT) -I includes
 SRCDIR			= ./src
 SRCNAME			= \
 				$(SRCDIR)/pipex \
-				$(SRCDIR)/utils/str_utils \
-				$(SRCDIR)/parser/parser \
-				$(SRCDIR)/parser/t_execinfo
-
-SRCNAME_BONUS	= \
+				$(SRCDIR)/datatypes/intarr \
+				$(SRCDIR)/datatypes/strarr \
+				$(SRCDIR)/datatypes/execinfo \
+				$(SRCDIR)/forker/forker \
+				$(SRCDIR)/parser/execinfo_constructor \
+				$(SRCDIR)/parser/path_finder \
+				$(SRCDIR)/parser/pipe_creator
 
 SRC				= $(addsuffix .c, $(SRCNAME))
 OBJ				= $(addsuffix .o, $(SRCNAME))
-SRC_BONUS		= $(addsuffix .c, $(SRCNAME_BONUS)))
-OBJ_BONUS		= $(addsuffix .o, $(SRCNAME_BONUS))
 
 RM				= rm -f
 CC				= gcc
@@ -31,9 +30,6 @@ all : $(NAME)
 $(NAME) : $(LIBFT) $(OBJ)
 	@$(CC) $(CFLAGS) $(INC_DIR) $(OBJ) $(LINK_LIBFT) -o $(NAME)
 
-bonus : $(LIBFT) $(OBJ_BONUS)
-	@$(CC) $(CFLAGS) $(INC_DIR) $(OBJ_BONUS) $(LINK_LIBFT) -o $(BONUS)
-
 $(LIBFT) :
 	make -C $(LIBFT_DIR)/
 
@@ -41,15 +37,15 @@ $(LIBFT) :
 	$(CC) $(CFLAGS) $(INC_DIR) -c $< -o $@
 
 clean :
-	$(RM) $(OBJ) $(OBJ_BONUS) $(NAME).o $(BONUS).o
+	$(RM) $(OBJ) $(NAME).o
 	make clean -C $(LIBFT_DIR)
 
 fclean : clean
-	$(RM) $(NAME) $(BONUS)
+	$(RM) $(NAME)
 	make fclean -C $(LIBFT_DIR)
 
 re :
 	make fclean
 	make all
 
-.PHONY : all bonus clean fclean re $(NAME) bonus
+.PHONY : all bonus clean fclean re $(NAME)

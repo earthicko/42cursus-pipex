@@ -1,5 +1,6 @@
 #ifndef FORKER_H
 # define FORKER_H
+# include "datatypes.h"
 
-int fork_ntimes(int (*pipes)[2], int n);
+int fork_ntimes(t_execinfo *e, int n);
 #endif

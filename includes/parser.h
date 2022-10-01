@@ -1,7 +1,10 @@
 #ifndef PARSER_H
 # define PARSER_H
-# include "libft.h"
+# include "datatypes.h"
 
-char	**parse_paths(char **envp);
-char	**make_full_bin_paths(int argc, char **argv, char **paths);
+t_execinfo	*construct_execinfo(int argc, char **argv, char **envp);
+
+int			find_bin_paths(t_execinfo *e, int argc, char **argv, char **paths);
+int			open_in_out_files(t_execinfo *e, int argc, char **argv);
+int			create_pipes(t_execinfo *e);
 #endif

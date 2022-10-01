@@ -1,4 +1,5 @@
-#include "pipex.h"
+#include "parser.h"
+#include "forker.h"
 
 int main(int argc, char **argv, char **envp)
 {
@@ -7,5 +8,6 @@ int main(int argc, char **argv, char **envp)
 	execinfo = construct_execinfo(argc, argv, envp);
 	if (!execinfo)
 		return (1);
+	fork_ntimes(execinfo, execinfo->n_command);
 	return (0);
 }
