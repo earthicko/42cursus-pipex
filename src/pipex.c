@@ -1,5 +1,6 @@
 #include "parser.h"
 #include "forker.h"
+#include "libft.h"
 
 int main(int argc, char **argv, char **envp)
 {
@@ -8,6 +9,7 @@ int main(int argc, char **argv, char **envp)
 	execinfo = construct_execinfo(argc, argv, envp);
 	if (!execinfo)
 		return (1);
-	fork_ntimes(execinfo, execinfo->n_command);
+	// ft_printf("return :%d\n", fork_ntimes(execinfo, execinfo->n_command));
+	execinfo_del(execinfo);
 	return (0);
 }

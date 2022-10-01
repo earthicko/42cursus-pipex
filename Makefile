@@ -13,7 +13,7 @@ SRCNAME			= \
 				$(SRCDIR)/datatypes/intarr \
 				$(SRCDIR)/datatypes/strarr \
 				$(SRCDIR)/datatypes/execinfo \
-				$(SRCDIR)/forker/forker \
+				$(SRCDIR)/executor/forker \
 				$(SRCDIR)/parser/execinfo_constructor \
 				$(SRCDIR)/parser/path_finder \
 				$(SRCDIR)/parser/pipe_creator

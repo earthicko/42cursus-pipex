@@ -24,10 +24,8 @@ t_execinfo	*execinfo_del(t_execinfo *execinfo)
 		i = 0;
 		while (i < execinfo->n_command - 1)
 		{
-			if (close(execinfo->fd_pipes[i][0]))
-				perror(NULL);
-			if (close(execinfo->fd_pipes[i][1]))
-				perror(NULL);
+			close(execinfo->fd_pipes[i][0]);
+			close(execinfo->fd_pipes[i][1]);
 			i++;
 		}
 		intarr2_del(execinfo->fd_pipes);

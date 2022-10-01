@@ -78,35 +78,34 @@ static char	*make_full_path(char *bin, char **paths)
 	return (NULL);
 }
 
-// static int	parse_args(t_execinfo *e, int at, char *args, char **paths)
-// {
-// 	char	**args_split;
+static int	parse_args(t_execinfo *e, int at, char *args, char **paths)
+{
+	char	**args_split;
 
-// 	args_split = ft_split(args, ' ');
-// 	if (!args_split)
-// 		return (-1);
-// 	e->bins[at] = make_full_path(args_split[0], paths);
-// 	if (!e->bins[at])
-// 	{
-// 		ft_printf("pipex: command not found: %s\n", args_split[0]);
-// 		return (-1);
-// 	}
-// 	e->args[at] = strarr2_dup(args_split, 1, strarr2len(args_split));
-// 	if (!e->args[at])
-// 	{
-// 		free(e->bins[at]);
-// 		return (-1);
-// 	}
-// 	strarr2_del(args_split);
-// 	return (0);
-// }
+	args_split = ft_split(args, ' ');
+	if (!args_split)
+		return (-1);
+	e->bins[at] = make_full_path(args_split[0], paths);
+	if (!e->bins[at])
+	{
+		ft_printf("pipex: command not found: %s\n", args_split[0]);
+		return (-1);
+	}
+	e->args[at] = strarr2_dup(args_split, 1, strarr2len(args_split));
+	if (!e->args[at])
+	{
+		free(e->bins[at]);
+		return (-1);
+	}
+	strarr2_del(args_split);
+	return (0);
+}
 
 int	find_bin_paths(t_execinfo *e, int argc, char **argv, char **envp)
 {
 	int		i;
 	char	**paths;
 
-	// TODO: argv[i]를 공백 기준으로 split해서 맨 앞은 bin, 나머지는 args에 넣어야 함
 	paths = parse_paths(envp);
 	if (!paths)
 		return (-1);
@@ -126,10 +125,8 @@ int	find_bin_paths(t_execinfo *e, int argc, char **argv, char **envp)
 	i = 2;
 	while (i < argc - 1)
 	{
-		e->bins[i - 2] = make_full_path(argv[i], paths);
-		if (!e->bins[i - 2])
+		if (parse_args(e, i - 2, argv[i], paths))
 		{
-			ft_printf("pipex: command not found: %s\n", argv[i]);
 			strarr2_del(paths);
 			strarr2_del(e->bins);
 			e->bins = NULL;

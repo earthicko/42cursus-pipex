@@ -20,6 +20,7 @@ int	open_in_out_files(t_execinfo *execinfo, int argc, char **argv)
 			perror(NULL);
 		return (-1);
 	}
+	ft_printf("infile %d outfile %d\n", execinfo->fd_in, execinfo->fd_out);
 	return (0);
 }
 
@@ -51,6 +52,7 @@ static int	deploy_pipes(int **pipes, int n_pipes)
 			revert_deploy_pipes(pipes, i);
 			return (-1);
 		}
+		ft_printf("pipe [%d] = %d -> %d\n", i, pipes[i][0], pipes[i][1]);
 		i++;
 	}
 	return (0);
