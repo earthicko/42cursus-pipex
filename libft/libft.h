@@ -139,6 +139,7 @@ void		ft_lstiter(t_list *lst, void (*f)(void *));
 t_list		*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 //			ft_printf.c      
 int			ft_printf(const char *format, ...);
+int			ft_dprintf(int fd, const char *format, ...);
 //			create_str.c      
 char		*cstr_nchars(int n, char c);
 char		*cstr_nbr(t_conv *conv, t_ll nbr, char *charset);

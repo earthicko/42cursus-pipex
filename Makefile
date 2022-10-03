@@ -18,7 +18,8 @@ SRCNAME			= \
 				$(SRCDIR)/parser/execinfo_constructor \
 				$(SRCDIR)/parser/path_finder \
 				$(SRCDIR)/parser/arg_parser \
-				$(SRCDIR)/parser/pipe_creator
+				$(SRCDIR)/parser/pipe_creator \
+				$(SRCDIR)/parser/ft_split_escape
 
 SRC				= $(addsuffix .c, $(SRCNAME))
 OBJ				= $(addsuffix .o, $(SRCNAME))

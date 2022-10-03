@@ -20,4 +20,6 @@ int			find_bin_paths(t_execinfo *e, int argc, char **argv, char **paths);
 int			parse_args(t_execinfo *e, int at, char *args, char **paths);
 int			open_in_out_files(t_execinfo *e, int argc, char **argv);
 int			create_pipes(t_execinfo *e);
+
+char		**ft_split_escape(char const *s, char c);
 #endif

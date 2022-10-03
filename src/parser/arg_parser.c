@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "datatypes.h"
+#include "parser.h"
 #include <unistd.h>
 
 static char	*find_bin_from_path(char *bin, char **paths)
@@ -55,7 +55,7 @@ int	parse_args(t_execinfo *e, int at, char *args, char **paths)
 {
 	char	**args_split;
 
-	args_split = ft_split(args, ' ');
+	args_split = ft_split_escape(args, ' ');
 	if (!args_split)
 		return (-1);
 	e->bins[at] = make_full_path(args_split[0], paths);
