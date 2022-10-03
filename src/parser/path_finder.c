@@ -1,5 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   path_finder.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: donghyle <donghyle@student.42seoul.kr>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/10/03 17:33:53 by donghyle          #+#    #+#             */
+/*   Updated: 2022/10/03 17:33:54 by donghyle         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
-#include "datatypes.h"
+#include "parser.h"
 #include <unistd.h>
 
 static int	append_slash(char **paths)
@@ -20,26 +32,33 @@ static int	append_slash(char **paths)
 	return (0);
 }
 
-static char	**parse_paths(char **envp)
+static char	*find_path_var_pointer(char **envp)
 {
 	char	**cursor;
-	char	*paths_condensed;
-	char	**paths;
 
 	cursor = envp;
 	while (*cursor)
 	{
-		if (ft_strncmp(*cursor, "PATH=", ft_strlen("PATH=")) == 0)
+		if (ft_strncmp(*cursor, "PATH=", 5) == 0)
 			break ;
 		cursor++;
 	}
-	if (!(*cursor))
+	return (*cursor);
+}
+
+static char	**parse_paths(char **envp)
+{
+	char	*path_var;
+	char	**paths;
+
+	path_var = find_path_var_pointer(envp);
+	if (!path_var)
 		return (NULL);
-	paths_condensed = ft_substr(*cursor, ft_strlen("PATH="), ft_strlen(*cursor));
-	if (!paths_condensed)
+	path_var = ft_substr(path_var, 5, ft_strlen(path_var));
+	if (!path_var)
 		return (NULL);
-	paths = ft_split(paths_condensed, ':');
-	free(paths_condensed);
+	paths = ft_split(path_var, ':');
+	free(path_var);
 	if (!paths)
 		return (NULL);
 	if (append_slash(paths))
@@ -50,55 +69,16 @@ static char	**parse_paths(char **envp)
 	return (paths);
 }
 
-static char	*find_bin_from_path(char *bin, char **paths)
+static int	abort_find_bin_paths(t_execinfo *e, char **paths)
 {
-	char	**path_tried;
-	char	*full_path;
-
-	path_tried = paths;
-	while (*path_tried)
+	if (paths)
+		strarr2_del(paths);
+	if (e->bins)
 	{
-		full_path = ft_strjoin(*path_tried, bin);
-		if (!full_path)
-			return (NULL);
-		if (access(full_path, X_OK) == 0)
-			return (full_path);
-		free(full_path);
-		path_tried++;
+		strarr2_del(e->bins);
+		e->bins = NULL;
 	}
-	return (NULL);
-}
-
-static char	*make_full_path(char *bin, char **paths)
-{
-	if (ft_strchr(bin, '/') == NULL)
-		return (find_bin_from_path(bin, paths));
-	if (access(bin, X_OK) == 0)
-		return (ft_strdup(bin));
-	return (NULL);
-}
-
-static int	parse_args(t_execinfo *e, int at, char *args, char **paths)
-{
-	char	**args_split;
-
-	args_split = ft_split(args, ' ');
-	if (!args_split)
-		return (-1);
-	e->bins[at] = make_full_path(args_split[0], paths);
-	if (!e->bins[at])
-	{
-		ft_printf("pipex: command not found: %s\n", args_split[0]);
-		return (-1);
-	}
-	e->args[at] = strarr2_dup(args_split, 1, strarr2len(args_split));
-	if (!e->args[at])
-	{
-		free(e->bins[at]);
-		return (-1);
-	}
-	strarr2_del(args_split);
-	return (0);
+	return (-1);
 }
 
 int	find_bin_paths(t_execinfo *e, int argc, char **argv, char **envp)
@@ -111,27 +91,17 @@ int	find_bin_paths(t_execinfo *e, int argc, char **argv, char **envp)
 		return (-1);
 	e->bins = (char **)malloc(sizeof(char *) * (argc - 2));
 	if (!e->bins)
-	{
-		strarr2_del(paths);
-		return (-1);
-	}
-	ft_memset(e->bins, 0, sizeof(e->bins));
+		return (abort_find_bin_paths(e, paths));
+	ft_memset(e->bins, 0, sizeof(char *) * (argc - 2));
 	e->args = (char ***)malloc(sizeof(char **) * (argc - 2));
 	if (!e->args)
-	{
-		strarr2_del(paths);
-		return (-1);
-	}
+		return (abort_find_bin_paths(e, paths));
+	ft_memset(e->args, 0, sizeof(char **) * (argc - 2));
 	i = 2;
 	while (i < argc - 1)
 	{
 		if (parse_args(e, i - 2, argv[i], paths))
-		{
-			strarr2_del(paths);
-			strarr2_del(e->bins);
-			e->bins = NULL;
-			return (-1);
-		}
+			return (abort_find_bin_paths(e, paths));
 		i++;
 	}
 	e->bins[i - 2] = NULL;

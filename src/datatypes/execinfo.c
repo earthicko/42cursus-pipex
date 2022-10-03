@@ -1,6 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execinfo.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: donghyle <donghyle@student.42seoul.kr>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/10/03 17:33:30 by donghyle          #+#    #+#             */
+/*   Updated: 2022/10/03 17:33:31 by donghyle         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 #include "datatypes.h"
-#include <fcntl.h>
 #include <unistd.h>
 #include <stdio.h>
 
@@ -22,7 +33,7 @@ t_execinfo	*execinfo_del(t_execinfo *execinfo)
 	if (execinfo->fd_pipes)
 	{
 		i = 0;
-		while (i < execinfo->n_command - 1)
+		while (i < execinfo->n_proc - 1)
 		{
 			close(execinfo->fd_pipes[i][0]);
 			close(execinfo->fd_pipes[i][1]);

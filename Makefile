@@ -14,8 +14,10 @@ SRCNAME			= \
 				$(SRCDIR)/datatypes/strarr \
 				$(SRCDIR)/datatypes/execinfo \
 				$(SRCDIR)/executor/forker \
+				$(SRCDIR)/executor/io_fd_setter \
 				$(SRCDIR)/parser/execinfo_constructor \
 				$(SRCDIR)/parser/path_finder \
+				$(SRCDIR)/parser/arg_parser \
 				$(SRCDIR)/parser/pipe_creator
 
 SRC				= $(addsuffix .c, $(SRCNAME))
