@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execinfo_constructor.c                             :+:      :+:    :+:   */
+/*   procinfo_constructor.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: donghyle <donghyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,25 +10,25 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "before_fork.h"
 #include <stddef.h>
 
-t_execinfo	*construct_execinfo(int argc, char **argv, char **envp)
+t_procinfo	*construct_procinfo(int argc, char **argv, char **envp)
 {
-	t_execinfo	*execinfo;
+	t_procinfo	*procinfo;
 
-	execinfo = execinfo_init();
-	if (!execinfo)
-		return (NULL);
 	if (argc - 3 < 2)
 		return (NULL);
-	execinfo->n_proc = argc - 3;
-	if (find_bin_paths(execinfo, argc, argv, envp))
-		return (execinfo_del(execinfo));
-	if (open_in_out_files(execinfo, argc, argv))
-		return (execinfo_del(execinfo));
-	if (create_pipes(execinfo))
-		return (execinfo_del(execinfo));
-	execinfo->envp = envp;
-	return (execinfo);
+	procinfo = procinfo_init();
+	if (!procinfo)
+		return (NULL);
+	procinfo->n_proc = argc - 3;
+	procinfo->infile = argv[1];
+	procinfo->outfile = argv[argc - 1];
+	if (find_coms_paths(procinfo, argc, argv, envp))
+		return (procinfo_del(procinfo));
+	if (create_pipes(procinfo))
+		return (procinfo_del(procinfo));
+	procinfo->envp = envp;
+	return (procinfo);
 }

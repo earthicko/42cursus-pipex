@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "parser.h"
+#include "before_fork.h"
 #include <unistd.h>
 
 static int	append_slash(char **paths)
@@ -69,42 +69,25 @@ static char	**parse_paths(char **envp)
 	return (paths);
 }
 
-static int	abort_find_bin_paths(t_execinfo *e, char **paths)
-{
-	if (paths)
-		strarr2_del(paths);
-	if (e->bins)
-	{
-		strarr2_del(e->bins);
-		e->bins = NULL;
-	}
-	return (-1);
-}
-
-int	find_bin_paths(t_execinfo *e, int argc, char **argv, char **envp)
+int	find_coms_paths(t_procinfo *e, int argc, char **argv, char **envp)
 {
 	int		i;
-	char	**paths;
 
-	paths = parse_paths(envp);
-	if (!paths)
+	e->paths = parse_paths(envp);
+	if (!e->paths)
 		return (-1);
-	e->bins = (char **)malloc(sizeof(char *) * (argc - 2));
-	if (!e->bins)
-		return (abort_find_bin_paths(e, paths));
-	ft_memset(e->bins, 0, sizeof(char *) * (argc - 2));
-	e->args = (char ***)malloc(sizeof(char **) * (argc - 2));
-	if (!e->args)
-		return (abort_find_bin_paths(e, paths));
-	ft_memset(e->args, 0, sizeof(char **) * (argc - 2));
+	e->coms = (char **)malloc(sizeof(char *) * (argc - 2));
+	if (!e->coms)
+		return (-1);
+	ft_memset(e->coms, 0, sizeof(char *) * (argc - 2));
 	i = 2;
 	while (i < argc - 1)
 	{
-		if (parse_args(e, i - 2, argv[i], paths))
-			return (abort_find_bin_paths(e, paths));
+		e->coms[i - 2] = ft_strdup(argv[i]);
+		if (!e->coms[i - 2])
+			return (-1);
 		i++;
 	}
-	e->bins[i - 2] = NULL;
-	strarr2_del(paths);
+	e->coms[i - 2] = NULL;
 	return (0);
 }

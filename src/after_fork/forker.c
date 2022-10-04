@@ -10,22 +10,50 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "executor.h"
+#include "after_fork.h"
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/wait.h>
 
-int	execute_child(t_execinfo *e, int i_proc)
+#include "libft.h"
+
+int	execute_child(t_procinfo *p, int i_proc)
 {
-	if (set_stdin_stdout(e, i_proc))
+	t_execinfo	*e;
+	int			status;
+
+	e = execinfo_init();
+	if (!e)
 		return (-1);
-	return (execve(e->bins[i_proc], e->args[i_proc], e->envp));
+	status = parse_args(e, p, i_proc);
+	if (status)
+	{
+		execinfo_del(e);
+		return (status);
+	}
+
+	ft_printf("%d: command: %s\n", getpid(), p->coms[i_proc]);
+	ft_printf("%d: bin: %s\n", getpid(), e->bin);
+	ft_printf("%d: args:\n", getpid());
+	char **str = e->args;
+	while (*str){ft_printf("\t%s\n", *str);str++;}
+
+	status = set_stdin_stdout(p, i_proc);
+	if (status)
+	{
+		execinfo_del(e);
+		return (status);
+	}
+	ft_printf("%d: ready to exec\n", getpid());
+	execve(e->bin, e->args, p->envp);
+	return (0);
 }
 
 int	wait_for_last_child(pid_t pid)
 {
 	int		stat_loc;
 
+	ft_printf("waiting for last child...\n");
 	if (waitpid(pid, &stat_loc, 0) < 0)
 	{
 		perror(NULL);
@@ -34,10 +62,9 @@ int	wait_for_last_child(pid_t pid)
 	return (WEXITSTATUS(stat_loc));
 }
 
-int	fork_ntimes(t_execinfo *e, int n)
+int	fork_ntimes(t_procinfo *p, int n)
 {
 	pid_t	pid;
-	int		i_proc;
 
 	if (n <= 0)
 		return (0);
@@ -48,11 +75,12 @@ int	fork_ntimes(t_execinfo *e, int n)
 		return (-1);
 	}
 	if (pid == 0)
-		return (execute_child(e, e->n_proc - n));
+		return (execute_child(p, p->n_proc - n));
 	else
 	{
+		ft_printf("%d: n=%d, forked child\n", getpid(), n);
 		if (n == 1)
 			return (wait_for_last_child(pid));
-		return (fork_ntimes(e, n - 1));
+		return (fork_ntimes(p, n - 1));
 	}
 }

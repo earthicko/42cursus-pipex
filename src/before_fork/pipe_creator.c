@@ -15,25 +15,6 @@
 #include <fcntl.h>
 #include <stdio.h>
 
-int	open_in_out_files(t_execinfo *execinfo, int argc, char **argv)
-{
-	execinfo->fd_in = open(argv[1], O_RDONLY);
-	if (execinfo->fd_in < 0)
-	{
-		perror(NULL);
-		return (-1);
-	}
-	execinfo->fd_out = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0666);
-	if (execinfo->fd_out < 0)
-	{
-		perror(NULL);
-		if (close(execinfo->fd_in))
-			perror(NULL);
-		return (-1);
-	}
-	return (0);
-}
-
 static void	revert_deploy_pipes(int **pipes, int from)
 {
 	int	i;
@@ -67,17 +48,17 @@ static int	deploy_pipes(int **pipes, int n_pipes)
 	return (0);
 }
 
-int	create_pipes(t_execinfo *execinfo)
+int	create_pipes(t_procinfo *procinfo)
 {
 	int	n_pipes;
 
-	n_pipes = execinfo->n_proc - 1;
-	execinfo->fd_pipes = intarr2_init(n_pipes, 2);
-	if (!execinfo->fd_pipes)
+	n_pipes = procinfo->n_proc - 1;
+	procinfo->fd_pipes = intarr2_init(n_pipes, 2);
+	if (!procinfo->fd_pipes)
 		return (-1);
-	if (deploy_pipes(execinfo->fd_pipes, n_pipes))
+	if (deploy_pipes(procinfo->fd_pipes, n_pipes))
 	{
-		intarr2_del(execinfo->fd_pipes);
+		intarr2_del(procinfo->fd_pipes);
 		return (-1);
 	}
 	return (0);

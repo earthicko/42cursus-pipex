@@ -13,16 +13,25 @@
 #ifndef DATATYPES_H
 # define DATATYPES_H
 
-typedef struct s_execinfo
+typedef struct s_procinfo
 {
 	int		n_proc;
-	int		fd_in;
-	int		fd_out;
 	int		**fd_pipes;
-	char	**bins;
-	char	***args;
+	char	*infile;
+	char	*outfile;
+	char	**coms;
+	char	**paths;
 	char	**envp;
+}	t_procinfo;
+
+typedef struct s_execinfo
+{
+	char	*bin;
+	char	**args;
 }	t_execinfo;
+
+t_procinfo	*procinfo_init(void);
+t_procinfo	*procinfo_del(t_procinfo *procinfo);
 
 t_execinfo	*execinfo_init(void);
 t_execinfo	*execinfo_del(t_execinfo *execinfo);

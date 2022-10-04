@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "parser.h"
+#include "after_fork.h"
 #include <unistd.h>
 
 static char	*find_bin_from_path(char *bin, char **paths)
@@ -42,38 +42,30 @@ static char	*make_full_path(char *bin, char **paths)
 	return (NULL);
 }
 
-static int	abort_parse_args(t_execinfo *e, int at)
-{
-	if (e->bins[at])
-		free(e->bins[at]);
-	if (e->args[at])
-		strarr2_del(e->args[at]);
-	return (-1);
-}
-
-int	parse_args(t_execinfo *e, int at, char *args, char **paths)
+int	parse_args(t_execinfo *e, t_procinfo *p, int at)
 {
 	char	**args_split;
 
-	args_split = ft_split_escape(args, ' ');
+	args_split = ft_split_escape(p->coms[at], ' ');
 	if (!args_split)
-		return (-1);
-	e->bins[at] = make_full_path(args_split[0], paths);
-	if (!e->bins[at])
+		return (1);
+	e->bin = make_full_path(args_split[0], p->paths);
+	if (!e->bin)
 	{
-		ft_printf("pipex: command not found: %s\n", args_split[0]);
-		return (-1);
+		ft_dprintf(2, "pipex: %s: command not found\n", args_split[0]);
+		strarr2_del(args_split);
+		return (127);
 	}
-	e->args[at] = strarr2_dup(args_split, 0, strarr2len(args_split));
-	if (!e->args[at])
-		return (abort_parse_args(e, at));
-	free(e->args[at][0]);
+	e->args = strarr2_dup(args_split, 0, strarr2len(args_split));
+	if (!e->args)
+		return (1);
+	free(e->args[0]);
 	strarr2_del(args_split);
-	args_split = ft_split(e->bins[at], '/');
+	args_split = ft_split(e->bin, '/');
 	if (!args_split)
-		return (abort_parse_args(e, at));
-	e->args[at][0] = ft_strdup(args_split[strarr2len(args_split) - 1]);
-	if (!e->args[at][0])
-		return (abort_parse_args(e, at));
+		return (1);
+	e->args[0] = ft_strdup(args_split[strarr2len(args_split) - 1]);
+	if (!e->args[0])
+		return (1);
 	return (0);
 }

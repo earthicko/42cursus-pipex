@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execinfo.c                                         :+:      :+:    :+:   */
+/*   procinfo.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: donghyle <donghyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,24 +12,39 @@
 
 #include "libft.h"
 #include "datatypes.h"
+#include <unistd.h>
+#include <stdio.h>
 
-t_execinfo	*execinfo_init(void)
+t_procinfo	*procinfo_init(void)
 {
-	t_execinfo	*init;
+	t_procinfo	*init;
 
-	init = (t_execinfo *)malloc(sizeof(t_execinfo));
+	init = (t_procinfo *)malloc(sizeof(t_procinfo));
 	if (!init)
 		return (NULL);
-	ft_memset(init, 0, sizeof(t_execinfo));
+	ft_memset(init, 0, sizeof(t_procinfo));
 	return (init);
 }
 
-t_execinfo	*execinfo_del(t_execinfo *execinfo)
+t_procinfo	*procinfo_del(t_procinfo *procinfo)
 {
-	if (execinfo->bin)
-		free(execinfo->bin);
-	if (execinfo->args)
-		strarr2_del(execinfo->args);
-	free(execinfo);
+	int	i;
+
+	if (procinfo->fd_pipes)
+	{
+		i = 0;
+		while (i < procinfo->n_proc - 1)
+		{
+			close(procinfo->fd_pipes[i][0]);
+			close(procinfo->fd_pipes[i][1]);
+			i++;
+		}
+		intarr2_del(procinfo->fd_pipes);
+	}
+	if (procinfo->coms)
+		strarr2_del(procinfo->coms);
+	if (procinfo->paths)
+		strarr2_del(procinfo->paths);
+	free(procinfo);
 	return (NULL);
 }

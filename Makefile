@@ -12,14 +12,15 @@ SRCNAME			= \
 				$(SRCDIR)/pipex \
 				$(SRCDIR)/datatypes/intarr \
 				$(SRCDIR)/datatypes/strarr \
+				$(SRCDIR)/datatypes/procinfo \
 				$(SRCDIR)/datatypes/execinfo \
-				$(SRCDIR)/executor/forker \
-				$(SRCDIR)/executor/io_fd_setter \
-				$(SRCDIR)/parser/execinfo_constructor \
-				$(SRCDIR)/parser/path_finder \
-				$(SRCDIR)/parser/arg_parser \
-				$(SRCDIR)/parser/pipe_creator \
-				$(SRCDIR)/parser/ft_split_escape
+				$(SRCDIR)/before_fork/procinfo_constructor \
+				$(SRCDIR)/before_fork/path_finder \
+				$(SRCDIR)/before_fork/pipe_creator \
+				$(SRCDIR)/after_fork/forker \
+				$(SRCDIR)/after_fork/io_fd_setter \
+				$(SRCDIR)/after_fork/arg_parser \
+				$(SRCDIR)/after_fork/ft_split_escape
 
 SRC				= $(addsuffix .c, $(SRCNAME))
 OBJ				= $(addsuffix .o, $(SRCNAME))
