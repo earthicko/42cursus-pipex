@@ -9,19 +9,19 @@ INC_DIR			= -I . $(INC_DIR_LIBFT) -I includes
 
 SRCDIR			= ./src
 SRCNAME			= \
-				$(SRCDIR)/pipex \
-				$(SRCDIR)/error_msg \
 				$(SRCDIR)/datatypes/intarr \
 				$(SRCDIR)/datatypes/strarr \
 				$(SRCDIR)/datatypes/procinfo \
 				$(SRCDIR)/datatypes/execinfo \
 				$(SRCDIR)/before_fork/procinfo_constructor \
-				$(SRCDIR)/before_fork/path_finder \
 				$(SRCDIR)/before_fork/pipe_creator \
 				$(SRCDIR)/after_fork/forker \
 				$(SRCDIR)/after_fork/io_fd_setter \
 				$(SRCDIR)/after_fork/arg_parser \
-				$(SRCDIR)/after_fork/ft_split_escape
+				$(SRCDIR)/parser/ft_split_escape \
+				$(SRCDIR)/parser/find_coms_paths \
+				$(SRCDIR)/error_msg \
+				$(SRCDIR)/pipex
 
 SRC				= $(addsuffix .c, $(SRCNAME))
 OBJ				= $(addsuffix .o, $(SRCNAME))

@@ -19,6 +19,4 @@
 int		fork_ntimes(t_procinfo *e, int n);
 void	set_stdin_stdout(t_procinfo *e, int n);
 void	parse_args(t_execinfo *e, t_procinfo *p, int at);
-
-char	**ft_split_escape(char const *s, char c);
 #endif

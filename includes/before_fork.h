@@ -15,7 +15,5 @@
 # include "datatypes.h"
 
 t_procinfo	*construct_procinfo(int argc, char **argv, char **envp);
-
-int			find_coms_paths(t_procinfo *e, int argc, char **argv, char **paths);
 int			create_pipes(t_procinfo *e);
 #endif

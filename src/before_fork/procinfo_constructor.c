@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "before_fork.h"
+#include "parser.h"
 #include <stddef.h>
 
 t_procinfo	*construct_procinfo(int argc, char **argv, char **envp)

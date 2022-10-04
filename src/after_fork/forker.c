@@ -23,10 +23,10 @@ void	execute_child(t_procinfo *p, int i_proc)
 	e = execinfo_init();
 	if (!e)
 		exit(1);
-	parse_args(e, p, i_proc);
 	set_stdin_stdout(p, i_proc);
-	execinfo_del(e);
+	parse_args(e, p, i_proc);
 	execve(e->bin, e->args, p->envp);
+	execinfo_del(e);
 	exit(1);
 }
 

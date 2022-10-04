@@ -12,6 +12,7 @@
 
 #include "libft.h"
 #include "error_msg.h"
+#include "parser.h"
 #include "after_fork.h"
 #include <unistd.h>
 
@@ -53,7 +54,7 @@ void	parse_args(t_execinfo *e, t_procinfo *p, int at)
 	e->bin = make_full_path(args_split[0], p->paths);
 	if (!e->bin)
 	{
-		ft_dprintf(2, "%scommand not found: %s\n", SHELL_NAME, args_split[0]);
+		ft_dprintf(2, "%s%s: command not found\n", SHELL_NAME, args_split[0]);
 		strarr2_del(args_split);
 		exit(127);
 	}
