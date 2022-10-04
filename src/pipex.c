@@ -13,22 +13,28 @@
 #include "before_fork.h"
 #include "after_fork.h"
 #include <stdio.h>
-
 #include <unistd.h>
-#include "libft.h"
+#include <sys/wait.h>
 
 int	main(int argc, char **argv, char **envp)
 {
 	t_procinfo	*procinfo;
-	int			error;
+	pid_t		last_pid;
+	int			stat_loc;
 
 	procinfo = construct_procinfo(argc, argv, envp);
 	if (!procinfo)
 		return (1);
-	error = fork_ntimes(procinfo, procinfo->n_proc);
-	if (error)
-		perror(NULL);
+	last_pid = fork_ntimes(procinfo, procinfo->n_proc);
 	procinfo_del(procinfo);
-	ft_printf("%d: return %d\n", getpid(), error);
-	return (error);
+	if (last_pid > 0)
+	{
+		if (waitpid(last_pid, &stat_loc, 0) < 0)
+		{
+			perror(NULL);
+			return (1);
+		}
+		return (WEXITSTATUS(stat_loc));
+	}
+	return (1);
 }

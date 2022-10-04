@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   after_fork.h                                       :+:      :+:    :+:   */
+/*   error_msg.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: donghyle <donghyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,15 +10,20 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef AFTER_FORK_H
-# define AFTER_FORK_H
-# include "datatypes.h"
-# define IN 0
-# define OUT 1
+#include "libft.h"
+#include "error_msg.h"
+#include <stdio.h>
+#include <unistd.h>
 
-int		fork_ntimes(t_procinfo *e, int n);
-void	set_stdin_stdout(t_procinfo *e, int n);
-void	parse_args(t_execinfo *e, t_procinfo *p, int at);
+void	perror_and_exit(char *prefix, int stat)
+{
+	perror(prefix);
+	exit(stat);
+}
 
-char	**ft_split_escape(char const *s, char c);
-#endif
+void	perror_nofile_and_exit(char *filename, int stat)
+{
+	ft_dprintf(STDERR_FILENO, "%s", SHELL_NAME);
+	ft_dprintf(STDERR_FILENO, "no such file or directory: %s\n", filename);
+	exit(stat);
+}

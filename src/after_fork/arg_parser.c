@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include "error_msg.h"
 #include "after_fork.h"
 #include <unistd.h>
 
@@ -42,30 +43,29 @@ static char	*make_full_path(char *bin, char **paths)
 	return (NULL);
 }
 
-int	parse_args(t_execinfo *e, t_procinfo *p, int at)
+void	parse_args(t_execinfo *e, t_procinfo *p, int at)
 {
 	char	**args_split;
 
 	args_split = ft_split_escape(p->coms[at], ' ');
 	if (!args_split)
-		return (1);
+		exit(1);
 	e->bin = make_full_path(args_split[0], p->paths);
 	if (!e->bin)
 	{
-		ft_dprintf(2, "pipex: %s: command not found\n", args_split[0]);
+		ft_dprintf(2, "%scommand not found: %s\n", SHELL_NAME, args_split[0]);
 		strarr2_del(args_split);
-		return (127);
+		exit(127);
 	}
 	e->args = strarr2_dup(args_split, 0, strarr2len(args_split));
 	if (!e->args)
-		return (1);
+		exit(1);
 	free(e->args[0]);
 	strarr2_del(args_split);
 	args_split = ft_split(e->bin, '/');
 	if (!args_split)
-		return (1);
+		exit(1);
 	e->args[0] = ft_strdup(args_split[strarr2len(args_split) - 1]);
 	if (!e->args[0])
-		return (1);
-	return (0);
+		exit(1);
 }

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   after_fork.h                                       :+:      :+:    :+:   */
+/*   error_msg.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: donghyle <donghyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,15 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef AFTER_FORK_H
-# define AFTER_FORK_H
-# include "datatypes.h"
-# define IN 0
-# define OUT 1
+#ifndef ERROR_MSG_H
+# define ERROR_MSG_H
+# define SHELL_NAME "pipex: "
 
-int		fork_ntimes(t_procinfo *e, int n);
-void	set_stdin_stdout(t_procinfo *e, int n);
-void	parse_args(t_execinfo *e, t_procinfo *p, int at);
-
-char	**ft_split_escape(char const *s, char c);
+void	perror_and_exit(char *prefix, int stat);
+void	perror_nofile_and_exit(char *filename, int stat);
 #endif

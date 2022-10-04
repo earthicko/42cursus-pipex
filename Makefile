@@ -10,6 +10,7 @@ INC_DIR			= -I . $(INC_DIR_LIBFT) -I includes
 SRCDIR			= ./src
 SRCNAME			= \
 				$(SRCDIR)/pipex \
+				$(SRCDIR)/error_msg \
 				$(SRCDIR)/datatypes/intarr \
 				$(SRCDIR)/datatypes/strarr \
 				$(SRCDIR)/datatypes/procinfo \
