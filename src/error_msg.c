@@ -23,7 +23,21 @@ void	perror_and_exit(char *prefix, int stat)
 
 void	perror_nofile_and_exit(char *filename, int stat)
 {
-	ft_dprintf(STDERR_FILENO, "%s", SHELL_NAME);
+	ft_dprintf(STDERR_FILENO, "%s: ", SHELL_NAME);
 	ft_dprintf(STDERR_FILENO, "%s: No such file or directory\n", filename);
+	exit(stat);
+}
+
+void	perror_permission_denied_and_exit(char *filename, int stat)
+{
+	ft_dprintf(STDERR_FILENO, "%s: ", SHELL_NAME);
+	ft_dprintf(STDERR_FILENO, "%s: Permission denied\n", filename);
+	exit(stat);
+}
+
+void	perror_command_not_found_and_exit(char *filename, int stat)
+{
+	ft_dprintf(STDERR_FILENO, "%s: ", SHELL_NAME);
+	ft_dprintf(STDERR_FILENO, "%s: command not found\n", filename);
 	exit(stat);
 }

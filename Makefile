@@ -18,8 +18,9 @@ SRCNAME			= \
 				$(SRCDIR)/after_fork/forker \
 				$(SRCDIR)/after_fork/io_fd_setter \
 				$(SRCDIR)/after_fork/arg_parser \
-				$(SRCDIR)/parser/ft_split_escape \
+				$(SRCDIR)/parser/ft_split_args \
 				$(SRCDIR)/parser/find_coms_paths \
+				$(SRCDIR)/parser/parse_utils \
 				$(SRCDIR)/error_msg \
 				$(SRCDIR)/pipex
 
@@ -36,18 +37,18 @@ $(NAME) : $(LIBFT) $(OBJ)
 	@$(CC) $(CFLAGS) $(INC_DIR) $(OBJ) $(LINK_LIBFT) -o $(NAME)
 
 $(LIBFT) :
-	make -C $(LIBFT_DIR)/
+	make -s -C $(LIBFT_DIR)/
 
 %.o : %.c
 	$(CC) $(CFLAGS) $(INC_DIR) -c $< -o $@
 
 clean :
 	$(RM) $(OBJ) $(NAME).o
-	make clean -C $(LIBFT_DIR)
+	make clean -s -C $(LIBFT_DIR)
 
 fclean : clean
 	$(RM) $(NAME)
-	make fclean -C $(LIBFT_DIR)
+	make fclean -s -C $(LIBFT_DIR)
 
 re :
 	make fclean

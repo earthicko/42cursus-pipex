@@ -11,10 +11,13 @@
 /* ************************************************************************** */
 
 #include "after_fork.h"
+#include "error_msg.h"
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <sys/wait.h>
+
+#include "libft.h"
 
 void	execute_child(t_procinfo *p, int i_proc)
 {
@@ -27,7 +30,7 @@ void	execute_child(t_procinfo *p, int i_proc)
 	parse_args(e, p, i_proc);
 	execve(e->bin, e->args, p->envp);
 	execinfo_del(e);
-	exit(1);
+	perror_and_exit(SHELL_NAME, 1);
 }
 
 int	wait_for_last_child(pid_t pid)
