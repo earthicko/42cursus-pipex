@@ -11,27 +11,7 @@
 /* ************************************************************************** */
 
 #include "libft.h"
-
-int	ft_isquote(int c)
-{
-	if (c == '\'' || c == '\"')
-		return (1);
-	return (0);
-}
-
-int	ft_isquote_literal(char *p_c)
-{
-	if (ft_isquote(*p_c) && *(p_c - 1) != '\\')
-		return (1);
-	return (0);
-}
-
-int	ft_isquote_escape(char *p_c)
-{
-	if (ft_isquote(*p_c) && *(p_c - 1) == '\\')
-		return (1);
-	return (0);
-}
+#include "parser.h"
 
 void	strip_quotes(char **p_str)
 {
@@ -46,14 +26,47 @@ void	strip_quotes(char **p_str)
 		new = ft_substr(*p_str, 1, len - 2);
 		free(*p_str);
 		*p_str = new;
-		// strip_quotes(p_str);
 	}
+}
+
+static size_t	count_escapes(char *str)
+{
+	size_t	i;
+	size_t	len;
+	size_t	n_escape;
+
+	len = ft_strlen(str);
+	n_escape = 0;
+	i = 1;
+	while (i < len)
+	{
+		if (ft_isquote_escape(str + i))
+			n_escape++;
+		i++;
+	}
+	return (n_escape);
+}
+
+static void	strcpy_without_escape(char *from, char *to, size_t new_len)
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	j = 0;
+	while (i < new_len)
+	{
+		if (ft_isquote_escape(from + j))
+			i--;
+		to[i] = from[j];
+		i++;
+		j++;
+	}
+	to[i] = '\0';
 }
 
 void	escape_quotes(char **p_str)
 {
-	size_t	i;
-	size_t	j;
 	size_t	len;
 	size_t	n_escape;
 	char	*new;
@@ -61,14 +74,7 @@ void	escape_quotes(char **p_str)
 	if (!(*p_str))
 		return ;
 	len = ft_strlen(*p_str);
-	n_escape = 0;
-	i = 1;
-	while (i < len)
-	{
-		if (ft_isquote_escape((*p_str) + i))
-			n_escape++;
-		i++;
-	}
+	n_escape = count_escapes(*p_str);
 	new = (char *)malloc(sizeof(char) * (len - n_escape + 1));
 	if (!new)
 	{
@@ -76,17 +82,7 @@ void	escape_quotes(char **p_str)
 		*p_str = NULL;
 		return ;
 	}
-	i = 0;
-	j = 0;
-	while (i < len - n_escape)
-	{
-		if (ft_isquote_escape((*p_str) + j))
-			i--;
-		new[i] = (*p_str)[j];
-		i++;
-		j++;
-	}
-	new[i] = '\0';
+	strcpy_without_escape(*p_str, new, len - n_escape);
 	free(*p_str);
 	*p_str = new;
 }

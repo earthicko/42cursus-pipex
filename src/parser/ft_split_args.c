@@ -14,72 +14,6 @@
 #include "parser.h"
 #include <limits.h>
 
-static void	skip_space(char **str, int inverted);
-
-static void	skip_until_quote(char **str, char quote)
-{
-	(*str)++;
-	// ft_dprintf(2, "skip_until_quote: %c\n", quote);
-	while (**str != '\0' && !(**str == quote && *(*str - 1) != '\\'))
-	{
-		// ft_dprintf(2, "skip_until_quote: meet %c\n", **str);
-		(*str)++;
-	}
-	if (**str == quote)
-		(*str)++;
-	if (!ft_isspace(**str))
-		skip_space(str, 1);
-}
-
-static void	skip_space(char **str, int inverted)
-{
-	if (inverted)
-	{
-		while (**str != '\0' && !ft_isspace(**str))
-		{
-			// ft_dprintf(2, "skip_space: meet %c\n", **str);
-			if (ft_isquote(**str))
-			{
-				// ft_dprintf(2, "skip_space: begin quote skipping\n", **str);
-				skip_until_quote(str, **str);
-				return ;
-			}
-			(*str)++;
-		}
-	}
-	else
-	{
-		while (**str != '\0' && ft_isspace(**str))
-			(*str)++;
-	}
-}
-
-// static void	skip_space(char **str, int inverted)
-// {
-// 	char	start;
-
-// 	if (inverted)
-// 	{
-// 		start = **str;
-// 		if (start == '\'' || start == '\"')
-// 		{
-// 			(*str)++;
-// 			while (**str != '\0' && **str != start)
-// 				(*str)++;
-// 			if (**str == start)
-// 				(*str)++;
-// 		}
-// 		else
-// 			while (**str != '\0' && !ft_isspace(**str))
-// 				(*str)++;
-// 	}
-// 	else
-// 	{
-// 		while (**str != '\0' && ft_isspace(**str))
-// 			(*str)++;
-// 	}
-// }
-
 static int	count_words(char *str)
 {
 	int	n_words;
@@ -115,9 +49,7 @@ static char	*ft_strcpy_word(char *str)
 		idx++;
 	}
 	word[idx] = '\0';
-	// ft_dprintf(2, "strcpy word [%s]\n", word);
 	strip_quotes(&word);
-	// ft_dprintf(2, "after strip [%s]\n", word);
 	return (word);
 }
 
@@ -148,7 +80,6 @@ char	**ft_split_args(char const *s)
 	while (*cursor != '\0')
 	{
 		skip_space(&cursor, 0);
-		// ft_dprintf(2, "skip space, cursor at %c\n", *cursor);
 		if (*cursor != '\0')
 		{
 			strs[idx] = ft_strcpy_word(cursor);
@@ -157,7 +88,6 @@ char	**ft_split_args(char const *s)
 			idx++;
 		}
 		skip_space(&cursor, 1);
-		// ft_dprintf(2, "skip word, cursor at %c\n", *cursor);
 	}
 	strs[idx] = 0;
 	return (strs);

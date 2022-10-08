@@ -14,6 +14,7 @@
 # define PARSER_H
 # include "datatypes.h"
 
+void	skip_space(char **str, int inverted);
 char	**ft_split_args(char const *s);
 int		find_coms_paths(t_procinfo *e, int argc, char **argv, char **paths);
 int		ft_isquote(int c);

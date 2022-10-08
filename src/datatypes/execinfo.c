@@ -27,15 +27,9 @@ t_execinfo	*execinfo_init(void)
 t_execinfo	*execinfo_del(t_execinfo *execinfo)
 {
 	if (execinfo->bin)
-	{
-		// ft_dprintf(2, "free bin\n");
 		free(execinfo->bin);
-	}
 	if (execinfo->args)
-	{
-		// ft_dprintf(2, "free args\n");
 		strarr2_del(execinfo->args);
-	}
 	free(execinfo);
 	return (NULL);
 }

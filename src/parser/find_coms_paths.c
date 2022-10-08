@@ -53,7 +53,11 @@ static char	**parse_paths(char **envp)
 
 	path_var = find_path_var_pointer(envp);
 	if (!path_var)
-		return (NULL);
+	{
+		paths = (char **)malloc(sizeof(char *));
+		paths[0] = NULL;
+		return (paths);
+	}
 	path_var = ft_substr(path_var, 5, ft_strlen(path_var));
 	if (!path_var)
 		return (NULL);

@@ -18,5 +18,6 @@
 
 int		fork_ntimes(t_procinfo *e, int n);
 void	set_stdin_stdout(t_procinfo *e, int n);
+char	*make_full_path(char *bin, char **paths);
 void	parse_args(t_execinfo *e, t_procinfo *p, int at);
 #endif

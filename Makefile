@@ -18,9 +18,12 @@ SRCNAME			= \
 				$(SRCDIR)/after_fork/forker \
 				$(SRCDIR)/after_fork/io_fd_setter \
 				$(SRCDIR)/after_fork/arg_parser \
+				$(SRCDIR)/after_fork/path_finder \
 				$(SRCDIR)/parser/ft_split_args \
+				$(SRCDIR)/parser/ft_split_args_utils \
 				$(SRCDIR)/parser/find_coms_paths \
 				$(SRCDIR)/parser/parse_utils \
+				$(SRCDIR)/parser/ft_isquote \
 				$(SRCDIR)/error_msg \
 				$(SRCDIR)/pipex
 
