@@ -73,7 +73,7 @@ static char	**parse_paths(char **envp)
 	return (paths);
 }
 
-int	find_coms_paths(t_procinfo *e, int argc, char **argv, char **envp)
+int	split_command(t_procinfo *e, int argc, char **argv, char **envp)
 {
 	int		i;
 
@@ -93,5 +93,28 @@ int	find_coms_paths(t_procinfo *e, int argc, char **argv, char **envp)
 		i++;
 	}
 	e->coms[i - 2] = NULL;
+	return (0);
+}
+
+int	split_command_heredoc(t_procinfo *e, int argc, char **argv, char **envp)
+{
+	int		i;
+
+	e->paths = parse_paths(envp);
+	if (!e->paths)
+		return (-1);
+	e->coms = (char **)malloc(sizeof(char *) * (argc - 3));
+	if (!e->coms)
+		return (-1);
+	ft_memset(e->coms, 0, sizeof(char *) * (argc - 3));
+	i = 3;
+	while (i < argc - 1)
+	{
+		e->coms[i - 3] = ft_strdup(argv[i]);
+		if (!e->coms[i - 3])
+			return (-1);
+		i++;
+	}
+	e->coms[i - 3] = NULL;
 	return (0);
 }

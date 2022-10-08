@@ -1,24 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   after_fork.h                                       :+:      :+:    :+:   */
+/*   io_fd_setter.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: donghyle <donghyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/03 17:32:56 by donghyle          #+#    #+#             */
-/*   Updated: 2022/10/03 17:32:57 by donghyle         ###   ########.fr       */
+/*   Created: 2022/10/03 17:34:08 by donghyle          #+#    #+#             */
+/*   Updated: 2022/10/03 17:34:11 by donghyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef AFTER_FORK_H
-# define AFTER_FORK_H
-# include "datatypes.h"
-# define IN 0
-# define OUT 1
+#include "after_fork.h"
+#include <unistd.h>
 
-int		fork_ntimes(t_procinfo *e, int n);
-void	close_all_pipes(t_procinfo *p);
-void	set_stdin_stdout(t_procinfo *e, int n);
-char	*make_full_path(char *bin, char **paths);
-void	parse_args(t_execinfo *e, t_procinfo *p, int at);
-#endif
+void	close_all_pipes(t_procinfo *p)
+{
+	int	i;
+
+	i = 0;
+	while (i < p->n_proc - 1)
+	{
+		close(p->fd_pipes[i][IN]);
+		close(p->fd_pipes[i][OUT]);
+		i++;
+	}
+}

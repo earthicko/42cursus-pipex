@@ -41,6 +41,8 @@ t_procinfo	*procinfo_del(t_procinfo *procinfo)
 		}
 		intarr2_del(procinfo->fd_pipes);
 	}
+	if (procinfo->limiter)
+		free(procinfo->limiter);
 	if (procinfo->coms)
 		strarr2_del(procinfo->coms);
 	if (procinfo->paths)

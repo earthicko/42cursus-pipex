@@ -17,6 +17,7 @@ SRCNAME			= \
 				$(SRCDIR)/before_fork/pipe_creator \
 				$(SRCDIR)/after_fork/forker \
 				$(SRCDIR)/after_fork/io_fd_setter \
+				$(SRCDIR)/after_fork/io_fd_setter_utils \
 				$(SRCDIR)/after_fork/arg_parser \
 				$(SRCDIR)/after_fork/path_finder \
 				$(SRCDIR)/parser/ft_split_args \
@@ -38,6 +39,8 @@ all : $(NAME)
 
 $(NAME) : $(LIBFT) $(OBJ)
 	@$(CC) $(CFLAGS) $(INC_DIR) $(OBJ) $(LINK_LIBFT) -o $(NAME)
+
+bonus : $(NAME)
 
 $(LIBFT) :
 	make -s -C $(LIBFT_DIR)/

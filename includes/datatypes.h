@@ -19,6 +19,7 @@ typedef struct s_procinfo
 	int		**fd_pipes;
 	char	*infile;
 	char	*outfile;
+	char	*limiter;
 	char	**coms;
 	char	**paths;
 	char	**envp;

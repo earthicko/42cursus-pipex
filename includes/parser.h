@@ -16,7 +16,8 @@
 
 void	skip_space(char **str, int inverted);
 char	**ft_split_args(char const *s);
-int		find_coms_paths(t_procinfo *e, int argc, char **argv, char **paths);
+int		split_command(t_procinfo *e, int c, char **v, char **envp);
+int		split_command_heredoc(t_procinfo *e, int c, char **v, char **envp);
 int		ft_isquote(int c);
 int		ft_isquote_literal(char *p_c);
 int		ft_isquote_escape(char *p_c);
