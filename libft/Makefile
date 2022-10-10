@@ -49,6 +49,9 @@ SRCNAME		= \
 			ft_lstclear \
 			ft_lstiter \
 			ft_lstmap \
+			get_next_line \
+			get_next_line_utils \
+			get_next_line_utils2 \
 			ft_printf \
 			t_conv \
 			ft_str_utils \

@@ -15,6 +15,10 @@
 # define LIBFT_H
 # include <stdlib.h>
 
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 42
+# endif
+
 # define CODE_OK 0
 # define CODE_ERROR_GENERIC -1
 # define CODE_ERROR_IO -2
@@ -58,6 +62,12 @@ typedef struct s_list
 	void			*content;
 	struct s_list	*next;
 }	t_list;
+
+typedef struct s_fdbuff
+{
+	int		fd;
+	char	*buff;
+}	t_fdbuff;
 
 typedef struct s_conv
 {
@@ -138,6 +148,13 @@ void		ft_lstdelone(t_list *lst, void (*del)(void *));
 void		ft_lstclear(t_list **lst, void (*del)(void *));
 void		ft_lstiter(t_list *lst, void (*f)(void *));
 t_list		*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
+t_fdbuff	*init_fdbuff(int fd);
+void		del_fdbuff(void *fdbuff);
+t_list		*init_fdlist(t_list **head, int init_fd);
+void		*del_fdlist(t_list **buff_list, t_list *target);
+t_fdbuff	*loc_fdbuff(t_list *node);
+int			is_ending_char(char c);
+char		*get_next_line(int fd);
 //			ft_printf.c      
 int			ft_printf(const char *format, ...);
 int			ft_dprintf(int fd, const char *format, ...);
