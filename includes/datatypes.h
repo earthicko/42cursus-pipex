@@ -12,6 +12,7 @@
 
 #ifndef DATATYPES_H
 # define DATATYPES_H
+# define HEREDOC_FILENAME ".heredoc_tmp"
 
 typedef struct s_procinfo
 {

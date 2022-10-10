@@ -26,6 +26,7 @@ t_procinfo	*construct_procinfo_heredoc(int argc, char **argv, char **envp)
 	procinfo->limiter = ft_strdup(argv[2]);
 	if (!procinfo->limiter)
 		return (procinfo_del(procinfo));
+	procinfo->infile = HEREDOC_FILENAME;
 	procinfo->outfile = argv[argc - 1];
 	if (split_command_heredoc(procinfo, argc, argv, envp))
 		return (procinfo_del(procinfo));
@@ -41,7 +42,7 @@ t_procinfo	*construct_procinfo(int argc, char **argv, char **envp)
 
 	if (argc - 3 < 2)
 		return (NULL);
-	if (ft_strncmp(argv[1], "here_doc", 9))
+	if (!ft_strncmp(argv[1], "here_doc", 9))
 		return (construct_procinfo_heredoc(argc, argv, envp));
 	procinfo = procinfo_init();
 	if (!procinfo)

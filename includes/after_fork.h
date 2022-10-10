@@ -18,6 +18,7 @@
 
 int		fork_ntimes(t_procinfo *e, int n);
 void	close_all_pipes(t_procinfo *p);
+int		heredoc_end(char *limiter, char *line);
 void	set_stdin_stdout(t_procinfo *e, int n);
 char	*make_full_path(char *bin, char **paths);
 void	parse_args(t_execinfo *e, t_procinfo *p, int at);

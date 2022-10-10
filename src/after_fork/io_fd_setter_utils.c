@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "after_fork.h"
 #include <unistd.h>
 
@@ -24,4 +25,18 @@ void	close_all_pipes(t_procinfo *p)
 		close(p->fd_pipes[i][OUT]);
 		i++;
 	}
+}
+
+int	heredoc_end(char *limiter, char *line)
+{
+	size_t	len_limiter;
+
+	len_limiter = ft_strlen(limiter);
+	if (len_limiter != ft_strlen(line) - 1)
+		return (0);
+	if (ft_strncmp(limiter, line, len_limiter))
+		return (0);
+	if (line[len_limiter] != '\n')
+		return (0);
+	return (1);
 }

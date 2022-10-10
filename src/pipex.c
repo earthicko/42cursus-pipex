@@ -34,6 +34,8 @@ int	main(int argc, char **argv, char **envp)
 			perror(NULL);
 			return (1);
 		}
+		if (procinfo->limiter)
+			unlink(HEREDOC_FILENAME);
 		return (WEXITSTATUS(stat_loc));
 	}
 	return (1);

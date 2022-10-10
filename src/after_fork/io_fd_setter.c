@@ -17,47 +17,38 @@
 #include <unistd.h>
 #include <stdio.h>
 
-// static void	set_stdin_stdout_heredoc(t_procinfo *p)
-// {
-// 	libft에 GNL 추가 후 구현
+static void	buffer_in_heredoc(t_procinfo *p)
+{
+	int		file;
+	char	*buf;
 
-// 	int		file;
-// 	char	*buf;
-
-// 	file = open(".heredoc_tmp", O_CREAT | O_WRONLY | O_TRUNC, 0000644);
-// 	if (file < 0)
-// 		perror_and_exit(SHELL_NAME, 1);
-// 	while (1)
-// 	{
-// 		write(1, "heredoc> ", 9);
-// 		if (get_next_line())
-// 		if (get_next_line(0, &buf) < 0)
-// 			exit(1);
-// 		if (!ft_strncmp(p->limiter, buf, ft_strlen(p->limiter) + 1))
-// 			break ;
-// 		write(file, buf, ft_strlen(buf));
-// 		write(file, "\n", 1);
-// 		free(buf);
-// 	}
-// 	free(buf);
-// 	close(file);
-// 	pipex->infile = open(".heredoc_tmp", O_RDONLY);
-// 	if (pipex->infile < 0)
-// 	{
-// 		unlink(".heredoc_tmp");
-// 		msg_error(ERR_HEREDOC);
-// 	}
-// }
+	file = open(HEREDOC_FILENAME, O_CREAT | O_WRONLY | O_TRUNC, 0000644);
+	if (file < 0)
+		perror_and_exit(SHELL_NAME, 1);
+	while (1)
+	{
+		ft_printf("heredoc> ");
+		buf = get_next_line(STDIN_FILENO);
+		if (!buf)
+		{
+			unlink(HEREDOC_FILENAME);
+			exit(1);
+		}
+		if (heredoc_end(p->limiter, buf))
+			break ;
+		ft_dprintf(file, buf);
+		free(buf);
+	}
+	free(buf);
+	close(file);
+}
 
 static void	set_stdin_stdout_first_proc(t_procinfo *p)
 {
 	int	fd_in;
 
-	// if (p->limiter)
-	// {
-	// 	set_stdin_stdout_heredoc(p);
-	// 	return ;
-	// }
+	if (p->limiter)
+		buffer_in_heredoc(p);
 	fd_in = open(p->infile, O_RDONLY);
 	if (fd_in < 0)
 		perror_nofile_and_exit(p->infile, 1);
